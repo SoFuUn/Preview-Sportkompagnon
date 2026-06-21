@@ -1,0 +1,101 @@
+<OneRepMaxScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDGridLayout:
+            rows: 2
+            cols: 2
+            spacing: 1
+            size_hint_y: 0.06
+
+            MDRaisedButton:
+                text: "ORM"
+                size_hint_x: 1
+                on_release: sm_content.current = 'calc'
+                
+            MDRaisedButton:
+                text: "RM"
+                size_hint_x: 1
+                on_release: sm_content.current = 'table'
+        
+        MDBoxLayout:
+            ScreenManager:
+                id: sm_content
+                Screen:
+                    name: 'calc'
+                    OneRepMaxCalc:  
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: 20
+                            spacing: 15
+
+                            MDTextField:
+                                id: weight_input
+                                hint_text: "Gewicht in kg"
+                                mode: "rectangle"
+                                input_filter: 'float'
+
+                            MDTextField:
+                                id: reps_input
+                                hint_text: "Wiederholungen"
+                                mode: "rectangle"
+                                input_filter: 'int'
+
+                            MDLabel:
+                                id: result_label
+                                text: "Ergebnis: -"
+                                halign: "center"
+                                font_style: "H6"
+
+                            MDBoxLayout:
+                                spacing: 10
+                                size_hint_y: None
+                                height: "50dp"
+                                
+                                MDRaisedButton:
+                                    text: "Berechnen"
+                                    size_hint_x: 0.5
+                                    on_release: root.orm_calculate()
+
+                                MDRaisedButton:
+                                    id: orm_save_btn
+                                    text: "Speichern"
+                                    disabled: True
+                                    size_hint_x: 0.5
+                                    on_release: app.show_preview_warning()
+                
+                Screen:
+                    name: 'table'
+                    RepMaxTable:
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: 20
+                            spacing: 15
+                            
+                            MDTextField:
+                                id: orm_input
+                                hint_text: "Gewicht in kg"
+                                mode: "rectangle"
+                                input_filter: 'float'
+                            
+                            ScrollView:
+                                MDList:
+                                    id: rm_values
+
+                            MDBoxLayout:
+                                spacing: 10
+                                size_hint_y: None
+                                height: "50dp"
+
+                                MDRaisedButton:
+                                    text: "Berechnen"
+                                    size_hint_x: 0.5
+                                    on_release: app.show_preview_warning()
+
+                                MDRaisedButton:
+                                    id: save_btn
+                                    text: "Speichern"
+                                    disabled: True
+                                    size_hint_x: 0.5
+                                    on_release: app.show_preview_warning()
+
+                                

@@ -1,0 +1,45 @@
+<MainMenu>:
+    name: 'menu'
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            id: top_bar
+            title: "SoFuUn Sportkompagnon"
+            anchor_title: "center"
+            panel_color: app.primary_color
+            md_bg_color: app.primary_color
+            specific_text_color: app.text_color
+            left_action_items: [["menu", lambda x: app.show_preview_warning()]]
+
+        MDBottomNavigation:
+            id: bot_nav
+            panel_color: app.primary_color
+            text_color_active: app.text_color
+            text_color_normal: app.text_color
+            selected_color_background: app.accent_color
+            use_text: False
+
+            MDBottomNavigationItem:
+                id: tab_trainings_plan
+                name: 'trainings_plan'
+                icon: 'clipboard-list'
+
+            MDBottomNavigationItem:
+                id: tab_orm_screen
+                name: 'orm_screen'
+                icon: 'calculator'
+
+            MDBottomNavigationItem:
+                id: tab_start_workout
+                name: 'start_workout'
+                icon: 'run'
+                on_tab_press: app.start_workout_screen.on_enter()
+
+            MDBottomNavigationItem:
+                id: tab_history_screen
+                name: 'history_screen'
+                icon: 'history'
+                on_tab_press: app.history_screen.on_enter()
+

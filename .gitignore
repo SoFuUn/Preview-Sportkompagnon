@@ -1,0 +1,12 @@
+#Ignoriere virtuelle Umgebungen
+.venv/
+venv/
+env/
+
+#Ignoriere Umgebungsvariablen
+env
+
+#Ignoriere Python Bytecode
+__pycache__/
+*.pyc
+.env

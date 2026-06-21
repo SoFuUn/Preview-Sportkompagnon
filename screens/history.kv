@@ -1,0 +1,122 @@
+<HistoryScreen>:
+    name: "history"
+    MDBoxLayout:
+        orientation: "vertical"
+
+        ScreenManager:
+            id: sm_content
+            
+            Screen:
+                name: "history_library_overview"
+                id: history_library_overview
+                
+                MDFloatLayout:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        pos_hint: {"top": 1}
+                        padding: "24dp"
+                        spacing: "16dp"
+
+                        RecycleView:
+                            id: history_list
+                            viewclass: "HistoryEntry"
+                            
+                            RecycleBoxLayout:
+                                # Harmonisiert mit der tatsächlichen Höhe von HistoryEntry
+                                default_size: None, dp(80)
+                                default_size_hint: 1, None
+                                size_hint_y: None
+                                height: self.minimum_height
+                                orientation: 'vertical'
+                                spacing: "12dp"
+            Screen:
+                name: "history_item_overview"
+                id: history_item_overview
+                
+                MDFloatLayout:
+                    MDBoxLayout:
+                        id: history_overview_container
+                        orientation: "vertical"
+                        size_hint: 1, 1
+                        pos_hint: {"x": 0, "top": 1}
+                    
+                    MDFloatingActionButton:
+                        icon: "arrow-left"
+                        md_bg_color: app.theme_cls.primary_color
+                        pos_hint: {"center_x": .15, "center_y": .08}
+                        on_release: root.switch_screen()
+
+<HistoryEntry>:
+    orientation: 'horizontal'
+    padding: "16dp"
+    ripple_behavior: True
+    size_hint_y: None
+    height: "80dp"
+    style: "filled"
+    radius: "12dp"
+    on_release: root.callback(self)
+    
+    MDBoxLayout:
+        orientation: 'horizontal'
+        spacing: "15dp"
+        
+        MDIcon:
+            icon: "calendar-check"
+            pos_hint: {"center_y": .5}
+            theme_text_color: "Primary"
+            
+        MDLabel:
+            text: root.name
+            font_style: "Body1" if hasattr(app.theme_cls, 'font_styles') else "BodyLarge"
+            bold: True
+            theme_text_color: "Primary"
+            valign: "center"
+
+<HistoryOverviewItem>:
+    orientation: "vertical"
+    spacing: "10dp"
+    padding: ["0dp", "16dp", "0dp", "0dp"]
+    size_hint_x: 1
+    size_hint_y: 1
+
+    MDCard:
+        size_hint_x: .92
+        pos_hint: {"center_x": .5}
+        size_hint_y: None
+        height: "72dp"
+        padding: "12dp"
+        radius: "14dp"
+        style: "elevated"
+        md_bg_color: getattr(app.theme_cls, 'bg_dark', [0.15, 0.15, 0.15, 1])
+        
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: "12dp"
+            
+            MDIcon:
+                icon: "trophy"
+                font_size: "32sp"
+                theme_text_color: "Custom"
+                text_color: 1, 0.8, 0, 1
+                pos_hint: {"center_y": .5}
+                
+            MDLabel:
+                text: root.name
+                font_style: "H5" if hasattr(app.theme_cls, 'font_styles') else "HeadlineSmall"
+                bold: True
+                valign: "center"
+
+    MDScrollView:
+        do_scroll_x: False
+        size_hint_x: 1
+        size_hint_y: 1
+        bar_width: "4dp"
+        
+        MDBoxLayout:
+            id: info_container
+            orientation: "vertical"
+            size_hint_x: 1
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: "2dp"
+            padding: ["0dp", "4dp", "0dp", "80dp"]

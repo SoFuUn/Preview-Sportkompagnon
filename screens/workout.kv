@@ -1,0 +1,150 @@
+<WorkoutScreen>:
+    name: 'workout_screen'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: app.background_color
+        padding: "16dp"
+        spacing: "16dp"
+        
+        # Vereinfachte, saubere Kopfzeile ohne Canvas-Linien-Gewirr
+        MDBoxLayout:
+            size_hint_y: None
+            height: "40dp"
+            
+            MDLabel:
+                text: "Aktuelles Workout"
+                font_style: "H6"
+                theme_text_color: "Custom"
+                text_color: app.text_color
+                
+            MDLabel:
+                text: "Aktiv"
+                font_style: "Subtitle2"
+                halign: "right"
+                theme_text_color: "Secondary"
+
+        ScreenManager:
+            id: sm_content
+            transition: __import__('kivy.uix.screenmanager').uix.screenmanager.NoTransition()
+            
+            # --- SCREEN 1: TAGESAUSWAHL ---
+            Screen:
+                name: 'day_cont'
+                
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    spacing: "16dp"
+                    
+                    ScrollView:
+                        bar_width: "4dp"
+                        MDList:
+                            id: day_container
+                            spacing: "8dp"
+
+                    MDFloatingActionButton:
+                        icon: "arrow-left"
+                        md_bg_color: app.theme_cls.primary_color
+                        pos_hint: {"center_x": .15, "center_y": .12}
+                        on_release: root.switch_screen()
+                    
+            # --- SCREEN 2: ÜBUNGS-TRACER ---
+            Screen:
+                name: 'exercise_cont'
+                
+                MDFloatLayout:
+                    
+                    MDBoxLayout:
+                        id: exercise_container
+                        size_hint: (1, None)
+                        height: "180dp"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+                    # Ein cleaner, nativer KivyMD Button statt des manipulierten Standard-Buttons
+                    MDRaisedButton:
+                        text: "Satz abschließen"
+                        font_size: "16sp"
+                        size_hint: (1, None)
+                        height: "48dp"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.12}
+                        md_bg_color: app.primary_color
+                        text_color: app.text_color
+                        on_release: root.get_next_set()
+
+
+# --- INTERNE WIDGET-TEMPLATES (AUFGERÄUMT) ---
+
+<DayContItem>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: "56dp"
+    
+    # Nutzt jetzt die nativen KivyMD-Listen-Eigenschaften statt eines Custom-Rahmens
+    OneLineIconListItem:
+        text: root.text
+        theme_text_color: "Custom"
+        text_color: app.text_color
+        on_release: root.callback_change_scene(root.id)
+        
+        IconLeftWidget:
+            icon: "calendar-check"
+            theme_text_color: "Custom"
+            text_color: app.text_color
+
+
+<ExerciseItem>:
+    orientation: "vertical"
+    size_hint_y: 1
+    spacing: "16dp"
+
+    # Übungsname als klares, unaufgeregtes Label
+    MDBoxLayout:
+        size_hint_y: None
+        height: "40dp"
+        
+        MDLabel:
+            id: exercise_name
+            text: root.text
+            halign: "left"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: app.text_color
+
+    # Eingabefelder im standardisierten, modernen "Outlined"-Look
+    MDBoxLayout:
+        orientation: "horizontal"
+        spacing: "16dp"
+        size_hint_y: None
+        height: "80dp"
+
+        # Block 1: Wiederholungen
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: "4dp"
+            
+            MDLabel:
+                text: "Wiederholungen"
+                font_style: "Caption"
+                theme_text_color: "Secondary"
+                
+            MDTextField:
+                id: reps_field
+                halign: "center"
+                mode: "rectangle"  # Standardisierter, schlichter Rahmen
+                input_filter: "int"
+
+        # Block 2: Gewicht
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: "4dp"
+            
+            MDLabel:
+                text: "Gewicht (kg)"
+                font_style: "Caption"
+                theme_text_color: "Secondary"
+                
+            MDTextField:
+                id: weight_field
+                halign: "center"
+                mode: "rectangle"  # Standardisierter, schlichter Rahmen
+                input_filter: "float"

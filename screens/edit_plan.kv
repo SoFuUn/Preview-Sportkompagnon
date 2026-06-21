@@ -1,0 +1,130 @@
+<EditPlanScreen>:
+    name: 'edit_plan'
+    MDBoxLayout:
+        orientation: "vertical"
+
+        ScreenManager:
+            id: sm_content
+            
+            Screen:
+                name: 'calender'
+                MDFloatLayout:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        pos_hint: {"top": 1}
+
+                        ScrollView:
+                            MDList:
+                                id: day_list
+
+                    # DISABLED FOR PREVIEW: Add Day
+                    MDFloatingActionButton:
+                        icon: "plus"
+                        md_bg_color: app.theme_cls.primary_color
+                        opacity: 0.5
+                        pos_hint: {"center_x": .85, "center_y": .12}
+                        on_release: app.show_preview_warning()
+
+                    MDFloatingActionButton:
+                        icon: "check"
+                        md_bg_color: app.theme_cls.primary_color
+                        pos_hint: {"center_x": .15, "center_y": .12}
+                        on_release: root.switch_screen()
+                        
+            Screen:
+                name: 'exercises'
+                MDFloatLayout:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        pos_hint: {"top": 1}
+
+                        ScrollView:
+                            MDList:
+                                id: exercise_list
+                                
+                    # DISABLED FOR PREVIEW: Add Exercise
+                    MDFloatingActionButton:
+                        icon: "plus"
+                        md_bg_color: app.theme_cls.primary_color
+                        opacity: 0.5
+                        pos_hint: {"center_x": .85, "center_y": .12}
+                        on_release: app.show_preview_warning()
+                        
+                    MDFloatingActionButton:
+                        icon: "check"
+                        md_bg_color: app.theme_cls.primary_color
+                        pos_hint: {"center_x": .15, "center_y": .12}
+                        on_release: root.change_scene()
+
+<DayItem>:
+    orientation: "horizontal"
+    size_hint_y: None
+    height: self.minimum_height
+
+    OneLineListItem:
+        text: root.text
+        on_release: root.callback_change_scene(root.id)
+
+    # DISABLED FOR PREVIEW: Delete Day
+    MDIconButton:
+        icon: "delete"
+        theme_text_color: "Hint"
+        on_release: app.show_preview_warning()
+              
+
+<ExpandableExerciseItem>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+
+    MDBoxLayout:
+        orientation: "horizontal"
+        size_hint_y: None
+        height: self.minimum_height
+        
+        OneLineListItem:
+            text: root.text
+            on_release: root.toggle()
+        
+        # ACTIVE FOR PREVIEW: Add Set
+        MDIconButton:
+            icon: "plus"
+            on_release: root.callback_add_set(root.id, container)
+
+        # DISABLED FOR PREVIEW: Delete Exercise
+        MDIconButton:
+            icon: "delete"
+            theme_text_color: "Hint"
+            on_release: app.show_preview_warning()
+
+    MDBoxLayout:
+        id: container
+        orientation: "vertical"
+        size_hint_y: None
+        height: self.minimum_height if not self.disabled else 0
+        opacity: 0 if self.disabled else 1
+        disabled: True
+
+
+<SetInputRow>:
+    orientation: "horizontal"
+    size_hint_y: None
+    height: "48dp"
+    spacing: "10dp"
+    padding: "5dp"
+
+    # ACTIVE FOR PREVIEW: Edit Sets
+    MDTextField:
+        id: reps_field
+        hint_text: "Reps"
+        on_focus: if not self.focus: root.save_to_db()
+        
+    MDTextField:
+        id: weight_field
+        hint_text: "Weight"
+        on_focus: if not self.focus: root.save_to_db()
+
+    # ACTIVE FOR PREVIEW: Delete Set
+    MDIconButton:
+        icon: "delete"
+        on_release: root.del_row()
